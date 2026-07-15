@@ -171,7 +171,7 @@ def list_flags(user_id: str, db: DbSession) -> list[dict]:
 
 
 @users_router.post("/{user_id}/flags", status_code=201, dependencies=[require_permission("users:write")])
-def add_flag(user_id: str, body: AddFlagRequest, current_user: CurrentUserDep, db: DbSession) -> dict:
+def add_flag(user_id: str, body: AddFlagRequest, current_user: CurrentUserDep, shim: ShimDep, db: DbSession) -> dict:
     if body.flag not in KNOWN_FLAGS:
         raise HTTPException(
             status_code=422,
@@ -186,17 +186,19 @@ def add_flag(user_id: str, body: AddFlagRequest, current_user: CurrentUserDep, d
     db.add(f)
     db.commit()
     audit_log.info("flag added: user=%s flag=%s by=%s", user_id, body.flag, current_user.user_id)
+    shim.notify_user_event("flagged", user_id)
     return _flag_dict(f)
 
 
 @users_router.delete("/{user_id}/flags/{flag_id}", status_code=204, dependencies=[require_permission("users:write")])
-def remove_flag(user_id: str, flag_id: str, current_user: CurrentUserDep, db: DbSession) -> None:
+def remove_flag(user_id: str, flag_id: str, current_user: CurrentUserDep, shim: ShimDep, db: DbSession) -> None:
     f = db.scalar(select(UserFlag).where(UserFlag.id == flag_id, UserFlag.user_id == user_id))
     if f is None:
         raise HTTPException(status_code=404, detail="Flag not found")
     db.delete(f)
     db.commit()
     audit_log.info("flag removed: user=%s flag=%s by=%s", user_id, f.flag, current_user.user_id)
+    shim.notify_user_event("unflagged", user_id)
 
 
 @users_router.post("/{user_id}/activate", dependencies=[require_permission("users:write")])

@@ -304,6 +304,7 @@ def register_key(body: EnrolRequest, shim: ShimDep, db: DbSession) -> dict:
     ))
     db.commit()
     audit_log.info("key enrolled: user=%s cantica_user_id=%s", user.id, cantica_user_id)
+    shim.notify_user_event("enrolled", user.id)
 
     return {
         "status": "enrolled",

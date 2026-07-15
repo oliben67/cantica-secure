@@ -169,6 +169,16 @@ require = shim.require_permission       # permission guard factory for host endp
 
 ---
 
+> **Status (2026-07-16): Phases A and B implemented** — `cantica_secure` wheel
+> with SecurityShim (own DB, seeds, migrations), the merged auth surface
+> (login/OIDC/invitations/enrolment/assert/tokens/users/flags/directory,
+> anonymous mode, X-API-Key, SMTP invite delivery), PrincipalAdapter +
+> permission-model registration + user-lifecycle events, `/security/ui-config`,
+> and reference host vocabularies in `presets.py` (STUDIO_*/CANTICA_*).
+> Conformance suite mounts two differently-configured hosts in one process
+> (studio- and cantica-flavoured) — 86 tests, 100% coverage, ≥99% gate
+> enforced. Next: Phase C (flagged host adoption).
+
 ## Phases
 
 ### Phase A — Package skeleton & canon (python)
