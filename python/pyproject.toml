@@ -34,7 +34,7 @@ packages = ["src/cantica_secure"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+addopts = "-q --cov=cantica_secure --cov-report=term-missing --cov-fail-under=99"
 
 [tool.uv]
 package = true

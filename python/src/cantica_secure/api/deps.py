@@ -164,7 +164,11 @@ async def get_current_user(
                 raise HTTPException(status_code=401, detail="Invalid token")
 
             now = datetime.now(timezone.utc)
-            if api_token.expires_at is not None and api_token.expires_at < now:
+            expires_at = api_token.expires_at
+            if expires_at is not None and expires_at.tzinfo is None:
+                # SQLite loses tzinfo on DateTime(timezone=True) columns.
+                expires_at = expires_at.replace(tzinfo=timezone.utc)
+            if expires_at is not None and expires_at < now:
                 raise HTTPException(status_code=401, detail="Token expired")
 
             result = gate_user(api_token.user, context="request:api-token")
