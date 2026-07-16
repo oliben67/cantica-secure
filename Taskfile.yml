@@ -1,0 +1,156 @@
+# https://taskfile.dev  —  requires Task ≥ 3.28
+#
+# Cantica Secure has two publishable parts: the Python shim package (python/)
+# and the @cantica/secure-ui React library (ui/). Tasks are dir-scoped so the
+# same verbs (install / test / build / check / ci / clean) cover both, matching
+# the other sub-projects' Taskfiles.
+version: '3'
+
+vars:
+  PY: python
+  UI: ui
+  # Strip any active venv from another project so uv always uses python/.venv.
+  UV: env -u VIRTUAL_ENV uv
+  # The shared wheel is published to the repo root for Docker builds (actor-ai pattern).
+  WHEEL: cantica_secure-0.1.0-py3-none-any.whl
+
+tasks:
+  default:
+    desc: List all available tasks
+    silent: true
+    cmd: task --list
+
+  # ── Setup ────────────────────────────────────────────────────────────────
+  install:
+    desc: Install both parts (Python dev env + UI npm deps)
+    cmds:
+      - task: install:py
+      - task: install:ui
+
+  install:py:
+    desc: Sync the Python package with its dev group
+    dir: '{{.PY}}'
+    cmd: "{{.UV}} sync --all-groups"
+
+  install:ui:
+    desc: Install the UI library's npm dependencies
+    dir: '{{.UI}}'
+    cmd: npm install
+
+  install:ci:
+    desc: Frozen install for CI (fails if the lockfile is stale)
+    cmds:
+      - cmd: "{{.UV}} sync --all-groups --frozen"
+        dir: '{{.PY}}'
+      - cmd: npm ci
+        dir: '{{.UI}}'
+
+  # ── Testing ──────────────────────────────────────────────────────────────
+  test:
+    desc: Run both test suites (Python ≥99% coverage gate + UI vitest)
+    cmds:
+      - task: test:py
+      - task: test:ui
+
+  test:py:
+    desc: Run the Python suite with coverage (≥ 99 % required)
+    dir: '{{.PY}}'
+    cmd: "{{.UV}} run pytest"
+
+  test:py:fast:
+    desc: Run the Python suite without coverage for quick iteration
+    dir: '{{.PY}}'
+    cmd: "{{.UV}} run pytest --no-cov -q"
+
+  test:py:one:
+    desc: "Run Python tests matching a name pattern   [usage: task test:py:one -- threats]"
+    dir: '{{.PY}}'
+    cmd: "{{.UV}} run pytest -k \"{{.CLI_ARGS}}\" -v"
+
+  test:ui:
+    desc: Run the UI vitest suite
+    dir: '{{.UI}}'
+    cmd: npm test
+
+  # ── Type checking (UI only — the Python package has no mypy config) ────────
+  typecheck:
+    desc: Type-check the UI library with tsc
+    dir: '{{.UI}}'
+    cmd: npm run typecheck
+
+  # ── Contract ─────────────────────────────────────────────────────────────
+  contract:freeze:
+    desc: Re-freeze the security API contract (contract.json) after an intentional change
+    dir: '{{.PY}}'
+    cmd: "{{.UV}} run python -m cantica_secure.contract"
+
+  # ── Build ────────────────────────────────────────────────────────────────
+  build:
+    desc: Build the Python wheel and the UI library
+    cmds:
+      - task: build:py
+      - task: build:ui
+
+  build:py:
+    desc: Build the Python sdist + wheel into python/dist/
+    dir: '{{.PY}}'
+    cmds:
+      - rm -rf dist/
+      - "{{.UV}} build"
+      - cmd: ls -lh dist/
+        silent: false
+
+  build:ui:
+    desc: Build the UI library into ui/dist/ (JS + d.ts + styles.css)
+    dir: '{{.UI}}'
+    cmd: npm run build
+
+  wheel:publish:
+    desc: Build the wheel and copy it to the repo root for Docker builds (actor-ai pattern)
+    cmds:
+      - task: build:py
+      - cmd: cp {{.PY}}/dist/{{.WHEEL}} ../{{.WHEEL}}
+      - cmd: echo "Published ../{{.WHEEL}}"
+        silent: true
+
+  # ── Combined workflows ────────────────────────────────────────────────────
+  check:
+    desc: Run all quality gates — Python suite, UI typecheck, UI tests
+    cmds:
+      - task: test:py
+      - task: typecheck
+      - task: test:ui
+
+  ci:
+    desc: Full CI pipeline — frozen install → checks
+    cmds:
+      - task: install:ci
+      - task: check
+
+  dev:
+    desc: Developer loop — run both test suites
+    cmds:
+      - task: test:py:fast
+      - task: test:ui
+
+  # ── Clean ─────────────────────────────────────────────────────────────────
+  clean:
+    desc: Remove build artefacts and caches from both parts
+    silent: true
+    cmd: |
+      rm -rf {{.PY}}/dist {{.PY}}/build {{.PY}}/src/*.egg-info
+      rm -rf {{.PY}}/.pytest_cache {{.PY}}/.ruff_cache {{.PY}}/.mypy_cache
+      rm -rf {{.PY}}/htmlcov {{.PY}}/.coverage {{.PY}}/.coverage.*
+      rm -rf {{.UI}}/dist {{.UI}}/*.tsbuildinfo
+      find {{.PY}} -path '*/.venv' -prune -o -type d -name '__pycache__' -print \
+        | xargs rm -rf 2>/dev/null || true
+      printf '\033[32m✓ Clean\033[0m\n'
+
+  clean:all:
+    desc: Remove everything including the venv and node_modules (run task install to restore)
+    cmds:
+      - task: clean
+      - cmd: rm -rf {{.PY}}/.venv {{.UI}}/node_modules
+        silent: true
+      - cmd: printf '\033[32m✓ Fully clean\033[0m\n'
+        silent: true
