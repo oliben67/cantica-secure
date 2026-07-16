@@ -1,0 +1,271 @@
+{
+  "version": "1.0",
+  "operations": {
+    "DELETE /v1/auth/tokens/{token_id}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:token_id"
+      ],
+      "responses": [
+        "204",
+        "422"
+      ]
+    },
+    "DELETE /v1/directory/mappings/{mapping_id}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:mapping_id"
+      ],
+      "responses": [
+        "204",
+        "422"
+      ]
+    },
+    "DELETE /v1/users/{user_id}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:user_id"
+      ],
+      "responses": [
+        "204",
+        "422"
+      ]
+    },
+    "DELETE /v1/users/{user_id}/flags/{flag_id}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:flag_id",
+        "path:user_id"
+      ],
+      "responses": [
+        "204",
+        "422"
+      ]
+    },
+    "DELETE /v1/users/{user_id}/keys/{key_id}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:key_id",
+        "path:user_id"
+      ],
+      "responses": [
+        "204",
+        "422"
+      ]
+    },
+    "DELETE /v1/users/{user_id}/roles/{role_name}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:role_name",
+        "path:user_id"
+      ],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/auth/me": {
+      "required_request_fields": [],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/auth/tokens": {
+      "required_request_fields": [],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/directory/mappings": {
+      "required_request_fields": [],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/roles": {
+      "required_request_fields": [],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/security/ui-config": {
+      "required_request_fields": [],
+      "required_params": [],
+      "responses": [
+        "200"
+      ]
+    },
+    "GET /v1/users": {
+      "required_request_fields": [],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/users/{user_id}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:user_id"
+      ],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/users/{user_id}/flags": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:user_id"
+      ],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "GET /v1/users/{user_id}/keys": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:user_id"
+      ],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "POST /v1/auth/assert": {
+      "required_request_fields": [
+        "assertion"
+      ],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "POST /v1/auth/invitations": {
+      "required_request_fields": [
+        "email",
+        "first_name",
+        "last_name"
+      ],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "POST /v1/auth/login": {
+      "required_request_fields": [
+        "email",
+        "password"
+      ],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "POST /v1/auth/oidc": {
+      "required_request_fields": [
+        "id_token"
+      ],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "POST /v1/auth/register": {
+      "required_request_fields": [],
+      "required_params": [],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "POST /v1/auth/tokens": {
+      "required_request_fields": [
+        "name"
+      ],
+      "required_params": [],
+      "responses": [
+        "201",
+        "422"
+      ]
+    },
+    "POST /v1/directory/mappings": {
+      "required_request_fields": [
+        "external_group",
+        "role_name"
+      ],
+      "required_params": [],
+      "responses": [
+        "201",
+        "422"
+      ]
+    },
+    "POST /v1/users": {
+      "required_request_fields": [
+        "email",
+        "password"
+      ],
+      "required_params": [],
+      "responses": [
+        "201",
+        "422"
+      ]
+    },
+    "POST /v1/users/{user_id}/activate": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:user_id"
+      ],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "POST /v1/users/{user_id}/flags": {
+      "required_request_fields": [
+        "flag"
+      ],
+      "required_params": [
+        "path:user_id"
+      ],
+      "responses": [
+        "201",
+        "422"
+      ]
+    },
+    "POST /v1/users/{user_id}/roles/{role_name}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:role_name",
+        "path:user_id"
+      ],
+      "responses": [
+        "200",
+        "422"
+      ]
+    },
+    "PUT /v1/users/{user_id}": {
+      "required_request_fields": [],
+      "required_params": [
+        "path:user_id"
+      ],
+      "responses": [
+        "200",
+        "422"
+      ]
+    }
+  }
+}

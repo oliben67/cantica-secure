@@ -183,7 +183,16 @@ require = shim.require_permission       # permission guard factory for host endp
 > behind the toolbar Security entry over a postMessage bridge (token stays in
 > the extension host / Electron main), studio theme — the in-repo modals remain
 > as the non-shim fallback. Both host UIs build and test green (cantica-web 55,
-> vscode 100). Next: Phase F (contract freeze + cross-server test).
+> vscode 100). **Phase F done — all phases A–F complete.** Frozen API
+> contract (contract.json + regression test), cross-server "one key pair,
+> both servers" test, and a consolidated threat suite (replay, enumeration,
+> revocation latency, private-key rejection, forgery) — 110 tests, 100%
+> coverage. Packaging: cantica-secure is an optional `shim` extra in both
+> hosts (flag-off images need nothing from it); the wheel is published to
+> the repo root and the studio-api Dockerfile installs it (image build
+> verified); the ui package builds dist on `prepare`. Remaining is
+> operational only: enabling the flags in a deployment and, as a separate
+> future decision, retiring the in-repo security copies.
 >
 > **Status (2026-07-16): Phases A and B implemented** — `cantica_secure` wheel
 > with SecurityShim (own DB, seeds, migrations), the merged auth surface
