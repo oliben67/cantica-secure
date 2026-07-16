@@ -1,5 +1,3 @@
-import React from 'react';
-
 /** Renders a compact ⚠ badge for the current account warnings (spec AUTH F,
  *  X-Cantica-Warning). Hosts pass the latest warnings they observed. */
 export function SessionWarningBadge({ warnings }: { warnings: string[] }) {

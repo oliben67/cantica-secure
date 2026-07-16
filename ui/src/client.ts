@@ -6,7 +6,10 @@ import type {
 } from './types';
 
 export class SecureClient {
-  constructor(private readonly transport: Transport) {}
+  private readonly transport: Transport;
+  constructor(transport: Transport) {
+    this.transport = transport;
+  }
 
   private async unwrap<T>(p: ReturnType<Transport['send']>): Promise<T> {
     const res = await p;
@@ -97,8 +100,10 @@ export class SecureClient {
 }
 
 export class SecureError extends Error {
-  constructor(message: string, readonly status: number) {
+  readonly status: number;
+  constructor(message: string, status: number) {
     super(message);
+    this.status = status;
     this.name = 'SecureError';
   }
 }

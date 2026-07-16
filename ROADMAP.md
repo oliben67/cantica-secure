@@ -177,8 +177,13 @@ require = shim.require_permission       # permission guard factory for host endp
 > CLI). Phase D: the @cantica/secure-ui React library (login / invite /
 > key-enrolment forms, users-activation-flags / directory-mappings / api-tokens
 > panels, warning badge) over a pluggable fetch/postMessage transport, two
-> reference themes (canticaWeb + studio), 22 tests. Next: Phase E (mount the
-> panels in cantica-web and the studio clients) and Phase F (contract freeze).
+> reference themes (canticaWeb + studio), 22 tests. **Phase E done**:
+> cantica-web serves /admin/security (Users / Directory / API Tokens tabs over a
+> fetch transport, canticaWeb theme); the studio clients mount the same panels
+> behind the toolbar Security entry over a postMessage bridge (token stays in
+> the extension host / Electron main), studio theme — the in-repo modals remain
+> as the non-shim fallback. Both host UIs build and test green (cantica-web 55,
+> vscode 100). Next: Phase F (contract freeze + cross-server test).
 >
 > **Status (2026-07-16): Phases A and B implemented** — `cantica_secure` wheel
 > with SecurityShim (own DB, seeds, migrations), the merged auth surface
