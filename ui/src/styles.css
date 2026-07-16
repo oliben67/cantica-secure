@@ -1,0 +1,66 @@
+/* @cantica/secure-ui — all styling reads theme tokens (see theme.ts).
+   Hosts set the --csec-* custom properties (via SecureProvider) to make the
+   forms feel native; any class below can be overridden by the host. */
+
+.csec-root {
+  color: var(--csec-text);
+  font-family: var(--csec-font);
+  font-size: var(--csec-font-size);
+}
+
+.csec-form, .csec-panel { display: flex; flex-direction: column; gap: 10px; }
+.csec-row { display: flex; gap: 8px; align-items: center; }
+
+.csec-field { display: flex; flex-direction: column; gap: 4px; }
+.csec-label { font-weight: 600; }
+.csec-hint { color: var(--csec-text-muted); font-weight: 400; font-style: italic; }
+
+.csec-input, .csec-select {
+  background: var(--csec-bg);
+  color: var(--csec-text);
+  border: 1px solid var(--csec-border);
+  border-radius: var(--csec-radius);
+  padding: 6px 8px;
+  font: inherit;
+  flex: 1;
+}
+.csec-input:focus, .csec-select:focus { outline: 2px solid var(--csec-accent); outline-offset: -1px; }
+
+.csec-btn {
+  border: 1px solid var(--csec-border);
+  border-radius: var(--csec-radius);
+  padding: 6px 12px;
+  font: inherit;
+  cursor: pointer;
+  background: var(--csec-surface);
+  color: var(--csec-text);
+}
+.csec-btn:disabled { opacity: 0.5; cursor: default; }
+.csec-btn--primary { background: var(--csec-accent); color: var(--csec-accent-text); border-color: var(--csec-accent); }
+.csec-btn--danger { color: var(--csec-danger); border-color: var(--csec-danger); background: transparent; }
+
+.csec-notice { border-radius: var(--csec-radius); padding: 8px 10px; border: 1px solid var(--csec-border); }
+.csec-notice--error { color: var(--csec-danger); border-color: var(--csec-danger); }
+.csec-notice--warning { color: var(--csec-warning); border-color: var(--csec-warning); }
+.csec-notice--info { color: var(--csec-text); }
+
+.csec-token { display: block; margin-top: 6px; word-break: break-all; font-family: monospace; font-size: 0.85em; }
+
+.csec-flag {
+  display: inline-flex; align-items: center; gap: 2px;
+  font-size: 0.8em; padding: 1px 6px; border-radius: 999px;
+  border: 1px solid var(--csec-border); color: var(--csec-text-muted);
+}
+.csec-flag--warning { color: var(--csec-warning); border-color: var(--csec-warning); }
+.csec-flag--blocked { color: var(--csec-danger); border-color: var(--csec-danger); }
+.csec-flag--newbie { color: var(--csec-accent); border-color: var(--csec-accent); }
+.csec-flag-x { border: none; background: none; cursor: pointer; color: inherit; padding: 0 0 0 2px; }
+
+.csec-user, .csec-mapping, .csec-token-row { border: 1px solid var(--csec-border); border-radius: var(--csec-radius); padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+.csec-user-head, .csec-mapping, .csec-token-row { flex-direction: row; align-items: center; }
+.csec-user-email, .csec-mapping-group, .csec-token-name { flex: 1; font-weight: 600; }
+.csec-badges { display: flex; gap: 4px; flex-wrap: wrap; }
+.csec-role-badge { font-size: 0.8em; padding: 1px 6px; border-radius: var(--csec-radius); background: var(--csec-surface); }
+.csec-empty { color: var(--csec-text-muted); font-style: italic; }
+.csec-checkbox { display: flex; align-items: center; gap: 6px; }
+.csec-warning-badge { color: var(--csec-warning); cursor: help; }

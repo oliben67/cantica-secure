@@ -169,6 +169,17 @@ require = shim.require_permission       # permission guard factory for host endp
 
 ---
 
+> **Status (2026-07-16): Phases A–D implemented.**
+> Phase C: both servers adopt the shim behind a flag (STUDIO_SECURITY_SHIM /
+> CANTICA_SECURITY_SHIM) with the in-repo code kept as the flag-off path —
+> studio-api 412 tests, cantica-api 814 tests at 99.39%, both suites green in
+> both configurations; plus a host-DB importer (records API + studio reader +
+> CLI). Phase D: the @cantica/secure-ui React library (login / invite /
+> key-enrolment forms, users-activation-flags / directory-mappings / api-tokens
+> panels, warning badge) over a pluggable fetch/postMessage transport, two
+> reference themes (canticaWeb + studio), 22 tests. Next: Phase E (mount the
+> panels in cantica-web and the studio clients) and Phase F (contract freeze).
+>
 > **Status (2026-07-16): Phases A and B implemented** — `cantica_secure` wheel
 > with SecurityShim (own DB, seeds, migrations), the merged auth surface
 > (login/OIDC/invitations/enrolment/assert/tokens/users/flags/directory,

@@ -1,8 +1,10 @@
-__pycache__/
-*.pyc
-.venv/
+node_modules/
 dist/
+*.tsbuildinfo
+__pycache__/
+.venv/
+*.egg-info/
 .pytest_cache/
 .coverage
-node_modules/
-.DS_Store
+dist-python/
+python/dist/
